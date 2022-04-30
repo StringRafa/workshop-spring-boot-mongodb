@@ -1,6 +1,7 @@
 package com.panambystudio.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.panambystudio.workshopmongo.dto.UserDTO;
 import com.panambystudio.workshopmongo.entities.User;
 import com.panambystudio.workshopmongo.repositories.UserRepository;
+import com.panambystudio.workshopmongo.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -25,6 +27,12 @@ public class UserService {
 		obj.setId(null);
 		obj = userRepository.save(obj);
 		return obj;
+	}
+	
+	public User findById(String id) {
+		Optional<User> user = userRepository.findById(id);
+		return user.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
 	}
 	
 	public User fromDTO(UserDTO objDto) {
