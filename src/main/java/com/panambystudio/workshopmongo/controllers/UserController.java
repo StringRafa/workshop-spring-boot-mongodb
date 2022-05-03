@@ -1,5 +1,6 @@
 package com.panambystudio.workshopmongo.controllers;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.panambystudio.workshopmongo.dto.UserDTO;
 import com.panambystudio.workshopmongo.entities.User;
@@ -32,15 +34,23 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<User> insert(@RequestBody UserDTO objDto) {
+	public ResponseEntity<Void> insert(@RequestBody UserDTO objDto) {
 		User obj = userService.fromDTO(objDto);
 		obj = userService.insert(obj);
-		return ResponseEntity.ok().body(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDTO> findById(@PathVariable String id){
 		User user = userService.findById(id);
 		return ResponseEntity.ok().body(new UserDTO(user));
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable String id){
+		userService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
