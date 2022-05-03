@@ -18,6 +18,7 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
+	
 	public List<User> findAll(){
 		return userRepository.findAll();
 	}
@@ -27,6 +28,11 @@ public class UserService {
 		obj.setId(null);
 		obj = userRepository.save(obj);
 		return obj;
+	}
+	
+	public void delete(String id) {
+		findById(id);
+		userRepository.deleteById(id);
 	}
 	
 	public User findById(String id) {
