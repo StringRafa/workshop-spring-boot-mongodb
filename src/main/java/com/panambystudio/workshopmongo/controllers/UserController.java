@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.panambystudio.workshopmongo.dto.UserDTO;
+import com.panambystudio.workshopmongo.entities.Post;
 import com.panambystudio.workshopmongo.entities.User;
 import com.panambystudio.workshopmongo.services.UserService;
 
@@ -60,5 +61,11 @@ public class UserController {
 	public ResponseEntity<Void> delete(@PathVariable String id){
 		userService.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> findPost(@PathVariable String id){
+		User obj = userService.findById(id);
+		return ResponseEntity.ok().body(obj.getPosts());
 	}
 }
