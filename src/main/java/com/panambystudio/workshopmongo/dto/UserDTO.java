@@ -1,7 +1,6 @@
 package com.panambystudio.workshopmongo.dto;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import com.panambystudio.workshopmongo.entities.User;
 
