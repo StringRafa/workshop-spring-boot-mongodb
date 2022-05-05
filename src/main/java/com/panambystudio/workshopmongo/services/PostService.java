@@ -1,5 +1,6 @@
 package com.panambystudio.workshopmongo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +23,7 @@ public class PostService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + User.class.getName()));
 	}
 
+	public List<Post> findByTitle(String text){
+		return postRepository.findByTitleContainingIgnoreCase(text);
+	}
 }
